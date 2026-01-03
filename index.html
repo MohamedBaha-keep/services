@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+/>
+    <title>Mohamed Baha</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            overflow-x: hidden;
+            transition: background 0.3s;
+        }
+
+        body[dir="rtl"] {
+            font-family: 'Arial', 'Segoe UI', sans-serif;
+        }
+
+        .language-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 10px 15px;
+            border-radius: 25px;
+        }
+
+        .lang-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .lang-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .lang-btn.active {
+            background: rgba(255,255,255,0.4);
+            font-weight: bold;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gradient-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #1e3c72, #2a5298, #3b6fc4, #4a8fe7);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .name-container {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 20px rgba(0,0,0,0.3);
+        }
+
+        .letter {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(50px) rotateX(-90deg);
+            animation: letterAppear 0.6s forwards;
+        }
+
+        @keyframes letterAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateX(0);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            opacity: 0;
+            animation: fadeIn 1s forwards 2s;
+            text-align: center;
+            max-width: 600px;
+            padding: 0 20px;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            animation: bounce 2s infinite;
+            opacity: 0;
+            animation: fadeIn 1s forwards 2.5s, bounce 2s infinite 3s;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        .section {
+            min-height: 100vh;
+            padding: 80px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .portfolio-section {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+
+        .services-section {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+
+        .form-section {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+
+        h2 {
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            animation: slideIn 1s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .portfolio-item {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .service-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            width: 100%;
+            margin-bottom: 3rem;
+        }
+
+        .service-card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .service-card:hover {
+            transform: scale(1.05);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        .service-card.selected {
+            background: rgba(255,255,255,0.3);
+            border-color: #fff;
+            transform: scale(1.05);
+        }
+
+        .form-container {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            background: rgba(255,255,255,0.3);
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        .checkbox-label:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .checkbox-label input {
+            width: auto;
+            margin-right: 8px;
+        }
+
+        body[dir="rtl"] .checkbox-label input {
+            margin-right: 0;
+            margin-left: 8px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            animation: modalAppear 0.5s;
+        }
+
+        @keyframes modalAppear {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .close-modal {
+            margin-top: 20px;
+            padding: 10px 30px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .close-modal:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        footer {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c44569 100%);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .name-container {
+                font-size: 2.5rem;
+            }
+            h2 {
+                font-size: 2rem;
+            }
+            .language-toggle {
+                top: 10px;
+                right: 10px;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="language-toggle">
+        <button class="lang-btn active" onclick="switchLanguage('en', this)">English</button>
+<button class="lang-btn" onclick="switchLanguage('ar', this)">العربية</button>
+    </div>
+
+ 
+
+    <div class="hero">
+        <div class="gradient-bg"></div>
+        <div class="name-container" id="nameContainer"></div>
+        <div class="subtitle" data-en="Full Stack Developer | Mobile & Web Solutions" data-ar="مطور برمجيات متكامل | حلول الموبايل والويب">Full Stack Developer | Mobile & Web Solutions</div>
+        <div class="scroll-indicator">↓</div>
+    </div>
+<!-- 
+    <section class="section portfolio-section" id="portfolio">
+        <h2 data-en="My Portfolio" data-ar="أعمالي">My Portfolio</h2>
+        <div class="portfolio-grid">
+            <div class="portfolio-item">
+                
+             
+                <h3>
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span data-en="E-Commerce App" data-ar="تطبيق تجارة إلكترونية">
+                      E-Commerce App
+                    </span>  </h3>
+                    <p data-en="Full-featured shopping app with payment integration and real-time inventory management." data-ar="تطبيق تسوق متكامل مع نظام الدفع وإدارة المخزون في الوقت الفعلي.">Full-featured shopping app with payment integration and real-time inventory management.</p>
+                
+            </div>
+            <div class="portfolio-item">
+    
+                <h3>
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span data-en="Business Dashboard" data-ar="لوحة تحكم الأعمال">
+                      Business Dashboard
+                    </span>
+                  </h3>
+                <p data-en="Analytics dashboard with interactive charts and data visualization for business insights." data-ar="لوحة تحليلات مع رسوم بيانية تفاعلية وتصور البيانات لرؤى الأعمال.">Analytics dashboard with interactive charts and data visualization for business insights.</p>
+            </div>
+            <div class="portfolio-item">
+                <h3 data-en="📱 Social Media Platform" data-ar="📱 منصة تواصل اجتماعي">📱 Social Media Platform</h3>
+                <p data-en="Cross-platform social networking app with messaging and content sharing features." data-ar="تطبيق شبكة اجتماعية متعدد المنصات مع ميزات المراسلة ومشاركة المحتوى.">Cross-platform social networking app with messaging and content sharing features.</p>
+            </div>
+            <div class="portfolio-item">
+                <h3 data-en="🎨 Portfolio Websites" data-ar="🎨 مواقع معرض الأعمال">🎨 Portfolio Websites</h3>
+                <p data-en="Creative and responsive websites for artists, photographers, and professionals." data-ar="مواقع إبداعية ومتجاوبة للفنانين والمصورين والمحترفين.">Creative and responsive websites for artists, photographers, and professionals.</p>
+            </div>
+        </div>
+    </section> -->
+
+    <section class="section services-section" id="services">
+        <h2 data-en="Services I Provide" data-ar="الخدمات التي أقدمها">Services I Provide</h2>
+        <div class="service-cards">
+            <div class="service-card">
+                <h3>
+                    <i class="fa-brands fa-apple" style="color: #11f900;"></i>
+                    <span data-en="iOS Apps" data-ar="تطبيقات iOS">iOS Apps</span>
+                  </h3>
+                <p data-en="Native iOS applications with Swift" data-ar="تطبيقات iOS أصلية باستخدام Swift">Native iOS applications with Swift</p>
+            </div>
+            <div class="service-card">
+                <h3>
+                    <i class="fa-brands fa-android" style="color: #11f900;"></i>
+                    <span data-en="Android Apps" data-ar="تطبيقات Android">Android Apps</span>
+                  </h3>
+                <p data-en="Native Android applications with Kotlin" data-ar="تطبيقات Android أصلية باستخدام Kotlin">Native Android applications with Kotlin</p>
+            </div>
+            <div class="service-card">
+                <h3>
+                    <i class="fa-solid fa-mobile-screen-button " style="color: #11f900;"></i>
+                    <span data-en="Cross-Platform Apps" data-ar="تطبيقات متعددة المنصات">
+                      Cross-Platform Apps
+                    </span>
+                  </h3>
+                <p data-en="iOS & Android with React Native/Flutter" data-ar="iOS و Android باستخدام React Native/Flutter">iOS & Android with React Native/Flutter</p>
+            </div>
+            <div class="service-card">
+                <h3>
+                    <i class="fa-solid fa-laptop-code" style="color: #11f900;"></i>
+                    <span data-en="Websites" data-ar="مواقع الويب">Websites</span>
+                  </h3>
+                <p data-en="Responsive web applications & websites" data-ar="تطبيقات ومواقع ويب متجاوبة">Responsive web applications & websites</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section form-section" id="hire">
+        <h2 data-en="Let's Work Together" data-ar="لنعمل معاً">Let's Work Together</h2>
+        <div class="form-container">
+            <form id="hiringForm">
+                <div class="form-group">
+                    <label data-en="Select Service *" data-ar="اختر الخدمة *">Select Service *</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="service" value="ios">
+                            <span data-en="iOS Only" data-ar="iOS فقط">iOS Only</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="service" value="android">
+                            <span data-en="Android Only" data-ar="Android فقط">Android Only</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="service" value="both">
+                            <span data-en="Both (iOS & Android)" data-ar="كلاهما (iOS و Android)">Both (iOS & Android)</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="service" value="website">
+                            <span data-en="Website" data-ar="موقع ويب">Website</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone" data-en="Phone Number *" data-ar="رقم الهاتف *">Phone Number *</label>
+                    <input type="tel" id="phone" required data-placeholder-en="Enter your phone number" data-placeholder-ar="أدخل رقم هاتفك" placeholder="Enter your phone number">
+                </div>
+
+                <div class="form-group">
+                    <label for="email" data-en="Email (Optional)" data-ar="البريد الإلكتروني (اختياري)">Email (Optional)</label>
+                    <input type="email" id="email" data-placeholder-en="Enter your email" data-placeholder-ar="أدخل بريدك الإلكتروني" placeholder="Enter your email">
+                </div>
+
+                <div class="form-group">
+                    <label for="description" data-en="Describe Your Project *" data-ar="صف مشروعك *">Describe Your Project *</label>
+                    <textarea id="description" required data-placeholder-en="Tell me about your project requirements..." data-placeholder-ar="أخبرني عن متطلبات مشروعك..." placeholder="Tell me about your project requirements..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" data-en="Submit Request" data-ar="إرسال الطلب">Submit Request</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p data-en="&copy; 2025 Mohamed Baha. All rights reserved." data-ar="&copy; 2025 محمد باها. جميع الحقوق محفوظة.">&copy; 2025 Your Name. All rights reserved.</p>
+        <div class="social-links">
+            <a href="https://wa.me/1234567890" class="social-link" target="_blank">
+                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+              </a>
+              <a href="https://wa.me/c/1234567890" class="social-link" target="_blank">
+                <i class="fa-brands fa-whatsapp"></i> WhatsApp Business
+              </a>
+              <a href="https://facebook.com/yourprofile" class="social-link" target="_blank">
+                <i class="fa-brands fa-facebook"></i> Facebook
+              </a>
+              
+              <a href="https://github.com/yourusername" class="social-link" target="_blank">
+                <i class="fa-brands fa-github"></i> GitHub
+              </a>
+        </div>
+    </footer>
+
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <h2>✅ <span data-en="Success!" data-ar="نجح!">Success!</span></h2>
+            <p data-en="Your request has been submitted successfully. I'll get back to you soon!" data-ar="تم إرسال طلبك بنجاح. سأعود إليك قريباً!">Your request has been submitted successfully. I'll get back to you soon!</p>
+            <button class="close-modal" onclick="closeModal()" data-en="Close" data-ar="إغلاق">Close</button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyDoQa08An-qFnPSq9nYuG4yTf7G3m4xKAM",
+          authDomain: "beyteeapp-4c81b.firebaseapp.com",
+          projectId: "beyteeapp-4c81b",
+          storageBucket: "beyteeapp-4c81b.firebasestorage.app",
+          messagingSenderId: "896634042113",
+          appId: "1:896634042113:web:6f8f76b990d7ff4ed34d00",
+          measurementId: "G-TXS9845REB"
+        };
+      
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+      
+        // Language data
+        const names = {
+          en: "Mohamed Baha",
+          ar: "محمد باها"
+        };
+      
+        let currentLang = 'en';
+      
+        // Animate ENGLISH name only
+        function animateEnglishName(name) {
+          const nameContainer = document.getElementById('nameContainer');
+          nameContainer.innerHTML = '';
+      
+          name.split('').forEach((letter, index) => {
+            const span = document.createElement('span');
+            span.className = 'letter';
+            span.textContent = letter === ' ' ? '\u00A0' : letter;
+            span.style.animationDelay = `${index * 0.1}s`;
+            nameContainer.appendChild(span);
+          });
+        }
+      
+        // Render ARABIC name normally
+        function renderArabicName(name) {
+          document.getElementById('nameContainer').textContent = name;
+        }
+      
+        // Switch language
+        function switchLanguage(lang, btn) {
+          currentLang = lang;
+      
+          document.body.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+      
+          document.querySelectorAll('[data-en]').forEach(el => {
+            const text = el.getAttribute(`data-${lang}`);
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+              el.placeholder = el.getAttribute(`data-placeholder-${lang}`) || text;
+            } else {
+              el.innerHTML = text;
+            }
+          });
+      
+          if (lang === 'en') {
+            animateEnglishName(names.en);
+          } else {
+            renderArabicName(names.ar);
+          }
+      
+          // Update language buttons
+          document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+          if (btn) btn.classList.add('active');
+        }
+      
+        // Initial load
+        animateEnglishName(names.en);
+      
+        // ===============================
+        // Form submission
+        // ===============================
+        document.getElementById('hiringForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+      
+          const services = Array.from(
+            document.querySelectorAll('input[name="service"]:checked')
+          ).map(cb => cb.value);
+      
+          if (services.length === 0) {
+            alert(currentLang === 'en'
+              ? 'Please select at least one service'
+              : 'الرجاء اختيار خدمة واحدة على الأقل'
+            );
+            return;
+          }
+      
+          const phone = document.getElementById('phone').value;
+          const email = document.getElementById('email').value;
+          const description = document.getElementById('description').value;
+      
+          const serviceData = {
+            services,
+            phone,
+            email: email || 'Not provided',
+            description,
+            language: currentLang,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            status: 'pending'
+          };
+      
+          try {
+            await db.collection('serviceRequests').add(serviceData);
+            document.getElementById('successModal').style.display = 'flex';
+            document.getElementById('hiringForm').reset();
+          } catch (error) {
+            console.error('Error:', error);
+            alert(currentLang === 'en'
+              ? 'Error submitting form. Please try again.'
+              : 'خطأ في إرسال النموذج. يرجى المحاولة مرة أخرى.'
+            );
+          }
+        });
+      
+        function closeModal() {
+          document.getElementById('successModal').style.display = 'none';
+        }
+      
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth' });
+            }
+          });
+        });
+      </script>
+</body>
+</html>
